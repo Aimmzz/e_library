@@ -4,7 +4,12 @@ import 'package:e_library/widgets/text_title.dart';
 import 'package:flutter/material.dart';
 
 class HeaderExplore extends StatelessWidget {
-  const HeaderExplore({super.key});
+  final Function()? onTap;
+
+  const HeaderExplore({
+    super.key,
+    required this.onTap
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +50,7 @@ class HeaderExplore extends StatelessWidget {
                 const TextTitle(title: 'Add Your Book'),
                 const Spacer(),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: onTap,
                     icon: const Icon(
                       Icons.add,
                       color: ColorsValues.mainBlack,

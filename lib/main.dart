@@ -3,12 +3,21 @@ import 'package:e_library/features/explore/explore_page.dart';
 import 'package:e_library/features/favorit/favorite_page.dart';
 import 'package:e_library/features/profile/profile_page.dart';
 import 'package:e_library/features/search/search_page.dart';
+import 'package:e_library/provider/explorer_provider.dart';
 import 'package:e_library/widgets/button_bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ExplorerProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

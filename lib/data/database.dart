@@ -17,6 +17,34 @@ class AppDb extends _$AppDb {
   @override
   int get schemaVersion => 1;
 
+  Future<List<Book>> getAllBook() async {
+    return await select(books).get();
+  }
+
+  Future<List<Book>> getBookByFavorite(int type) async {
+    return await (select(books)..where((tbl) => tbl.favorite.equals(type))).get();
+  }
+
+  Future addFavorite(int id, int type) async {
+    return (update(books)..where((tbl) => tbl.id.equals(id)))
+        .write(BooksCompanion(favorite: Value(type)));
+  }
+
+  Future updateBook(int id, String title, String author, DateTime publishedYear, int favorite) async {
+    return (update(books)..where((tbl) => tbl.id.equals(id))).write(
+      BooksCompanion(
+        title: Value(title),
+        author: Value(author),
+        publishedYear: Value(publishedYear),
+        favorite: Value(favorite),
+      ),
+    );
+  }
+
+  Future deleteBook(int id) async {
+    return (delete(books)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
 }
 
 LazyDatabase _openConnection() {

@@ -30,13 +30,13 @@ class AppDb extends _$AppDb {
         .write(BooksCompanion(favorite: Value(type)));
   }
 
-  Future updateBook(int id, String title, String author, DateTime publishedYear, int favorite) async {
+  Future updateBook(int id, String title, String author, DateTime publishedYear, String publisher) async {
     return (update(books)..where((tbl) => tbl.id.equals(id))).write(
       BooksCompanion(
         title: Value(title),
         author: Value(author),
         publishedYear: Value(publishedYear),
-        favorite: Value(favorite),
+        publisher: Value(publisher),
       ),
     );
   }

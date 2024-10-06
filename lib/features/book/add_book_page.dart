@@ -1,13 +1,10 @@
 import 'package:e_library/constant/custom_size.dart';
 import 'package:e_library/provider/add_book_provider.dart';
-import 'package:e_library/data/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddBookPage extends StatelessWidget {
-  final Book? book;
-
-  const AddBookPage({super.key, this.book});
+  const AddBookPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +12,6 @@ class AddBookPage extends StatelessWidget {
       create: (_) => AddBookProvider(),
       child: Consumer<AddBookProvider>(
         builder: (context, provider, child) {
-          // Jika dalam mode edit, isi data form dengan data buku yang diberikan
-          if (book != null) {
-            provider.loadBookData(book!);
-          }
-
           return Dialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
@@ -30,10 +22,10 @@ class AddBookPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
+                  const Center(
                     child: Text(
-                      provider.isEditMode ? 'Edit Book' : 'Add Book',
-                      style: const TextStyle(
+                      'Add Book',
+                      style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -42,6 +34,7 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH16,
 
+                  // Input untuk judul buku
                   TextField(
                     controller: provider.titleController,
                     decoration: InputDecoration(
@@ -53,6 +46,7 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH16,
 
+                  // Input untuk penulis buku
                   TextField(
                     controller: provider.authorController,
                     decoration: InputDecoration(
@@ -64,6 +58,7 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH16,
 
+                  // Input untuk penerbit buku
                   TextField(
                     controller: provider.publisherController,
                     decoration: InputDecoration(
@@ -75,6 +70,7 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH16,
                   
+                  // Dropdown untuk memilih tahun terbit buku
                   DropdownButtonFormField<int>(
                     value: provider.selectedYear,
                     items: provider.years.map((int year) {
@@ -95,10 +91,11 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH24,
 
+                  // Tombol untuk menyimpan buku
                   Center(
                     child: ElevatedButton(
                       onPressed: () => provider.saveBook(context),
-                      child: Text(provider.isEditMode ? 'Update Book' : 'Save Book'),
+                      child: const Text('Save Book'),
                     ),
                   ),
                 ],

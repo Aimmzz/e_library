@@ -1,5 +1,7 @@
 import 'package:e_library/constant/color_values.dart';
+import 'package:e_library/features/book/edit_book_page.dart';
 import 'package:e_library/provider/explorer_provider.dart';
+import 'package:e_library/provider/edit_book_provider.dart';
 import 'package:e_library/widgets/card_book.dart';
 import 'package:e_library/widgets/delete_dialog.dart';
 import 'package:e_library/widgets/header_explore.dart';
@@ -15,12 +17,14 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
+  @override
   void initState() {
     super.initState();
     Future.microtask(() {
       Provider.of<ExplorerProvider>(context, listen: false).fetchBooks();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +49,6 @@ class _ExplorePageState extends State<ExplorePage> {
                   return ListView.builder(
                     itemCount: provider.books.length,
                     itemBuilder: (context, index) {
-
                       final book = provider.books[index];
                       final isFavorite = book.favorite == 2;
 
@@ -58,7 +61,7 @@ class _ExplorePageState extends State<ExplorePage> {
                           bool? confirmed = await showConfirmationDialog(
                             context,
                             'Konfirmasi Hapus',
-                            'Apakah Anda yakin ingin menghapus buku "${book.title}"?'
+                            'Apakah Anda yakin ingin menghapus buku "${book.title}"?',
                           );
 
                           if (confirmed == true) {
@@ -70,17 +73,26 @@ class _ExplorePageState extends State<ExplorePage> {
                           await Provider.of<ExplorerProvider>(context, listen: false).updateFavorite(book.id, newFavoriteValue);
                         },
                         editBook: () {
-                          Provider.of<ExplorerProvider>(context, listen: false).openEditBookPage(context, book);
+                          final editProvider = Provider.of<EditBookProvider>(context, listen: false);
+                          editProvider.setBookData(book); // Set data buku yang akan diedit
+
+                          // Panggil showModalBottomSheet
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return const EditBookPage(); // Panggil EditBookPage
+                            },
+                          );
                         },
                         isFavorite: isFavorite,
                       );
-                    }
+                    },
                   );
                 },
-              )
-            )
+              ),
+            ),
           ],
-        )
+        ),
       ),
     );
   }

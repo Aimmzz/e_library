@@ -6,6 +6,7 @@ import 'package:e_library/features/search/search_page.dart';
 import 'package:e_library/provider/edit_book_provider.dart';
 import 'package:e_library/provider/explorer_provider.dart';
 import 'package:e_library/provider/favorite_provider.dart';
+import 'package:e_library/provider/search_provider.dart';
 import 'package:e_library/widgets/button_bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => ExplorerProvider()),
         ChangeNotifierProvider(create: (_) => EditBookProvider()),
         ChangeNotifierProvider(create: (_) => FavoriteProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: const MyApp(),
     ),

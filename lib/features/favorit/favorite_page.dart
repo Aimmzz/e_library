@@ -4,6 +4,7 @@ import 'package:e_library/provider/edit_book_provider.dart';
 import 'package:e_library/provider/favorite_provider.dart';
 import 'package:e_library/widgets/card_book.dart';
 import 'package:e_library/widgets/delete_dialog.dart';
+import 'package:e_library/widgets/header_favorite.dart';
 import 'package:e_library/widgets/text_title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,7 @@ class _FavoritePageState extends State<FavoritePage> {
       body: SafeArea(
         child: Column(
           children: [
+            const HeaderFavorite(),
             Expanded(
               child: Consumer<FavoriteProvider>(
                 builder: (context, provider, child) {

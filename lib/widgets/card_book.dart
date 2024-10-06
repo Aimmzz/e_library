@@ -77,14 +77,14 @@ class CardBook extends StatelessWidget {
                         size: 24.0,
                       ),
                     ),
-                    // PopupMenuButton untuk menampilkan opsi edit dan delete
+
                     PopupMenuButton<int>(
                       icon: const Icon(Icons.more_horiz_outlined),
                       onSelected: (value) {
                         if (value == 1) {
-                          editBook(); // Panggil fungsi editBook saat opsi edit dipilih
+                          editBook();
                         } else if (value == 2) {
-                          deleteBook(); // Panggil fungsi deleteBook saat opsi delete dipilih
+                          deleteBook();
                         }
                       },
                       itemBuilder: (context) => [

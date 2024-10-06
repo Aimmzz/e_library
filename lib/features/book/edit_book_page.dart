@@ -20,7 +20,7 @@ class EditBookPage extends StatelessWidget {
           bottom: MediaQuery.of(context).viewInsets.bottom + 16, // Mengatur padding agar tidak tertutup keyboard
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Agar bottom sheet sesuai dengan konten
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Center(
@@ -51,7 +51,7 @@ class EditBookPage extends StatelessWidget {
             TextField(
               controller: editBookProvider.authorController,
               decoration: InputDecoration(
-                labelText: 'Enter book author',
+                hintText: 'Enter book author',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -63,7 +63,7 @@ class EditBookPage extends StatelessWidget {
             TextField(
               controller: editBookProvider.publisherController,
               decoration: InputDecoration(
-                labelText: 'Enter book publisher',
+                hintText: 'Enter book publisher',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -83,8 +83,10 @@ class EditBookPage extends StatelessWidget {
               onChanged: (year) {
                 editBookProvider.setSelectedYear(year);
               },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 hintText: 'Select published year',
               ),
             ),

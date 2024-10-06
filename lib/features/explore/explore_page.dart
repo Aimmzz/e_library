@@ -1,7 +1,7 @@
 import 'package:e_library/constant/color_values.dart';
 import 'package:e_library/features/book/edit_book_page.dart';
-import 'package:e_library/provider/explorer_provider.dart';
 import 'package:e_library/provider/edit_book_provider.dart';
+import 'package:e_library/provider/explorer_provider.dart';
 import 'package:e_library/widgets/card_book.dart';
 import 'package:e_library/widgets/delete_dialog.dart';
 import 'package:e_library/widgets/header_explore.dart';
@@ -40,6 +40,13 @@ class _ExplorePageState extends State<ExplorePage> {
             Expanded(
               child: Consumer<ExplorerProvider>(
                 builder: (context, provider, child) {
+
+                  if (provider.isLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
                   if (provider.books.isEmpty) {
                     return const Center(
                       child: TextTitle(title: 'No books available'),
@@ -74,15 +81,18 @@ class _ExplorePageState extends State<ExplorePage> {
                         },
                         editBook: () {
                           final editProvider = Provider.of<EditBookProvider>(context, listen: false);
-                          editProvider.setBookData(book); // Set data buku yang akan diedit
+                          editProvider.setBookData(book);
 
-                          // Panggil showModalBottomSheet
                           showModalBottomSheet(
                             context: context,
                             builder: (context) {
-                              return const EditBookPage(); // Panggil EditBookPage
+                              return const EditBookPage();
                             },
-                          );
+                          ).then((value) {
+                            if (value == true) {
+                              Provider.of<ExplorerProvider>(context, listen: false).fetchBooks();
+                            }
+                          });
                         },
                         isFavorite: isFavorite,
                       );

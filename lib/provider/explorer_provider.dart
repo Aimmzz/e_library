@@ -10,13 +10,23 @@ class ExplorerProvider with ChangeNotifier {
   List<Book> _book = [];
   List<Book> get books => _book;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   ExplorerProvider() {
     _database = AppDb();
   }
-
+  
   Future<void> fetchBooks() async {
-    _book = await _database.getAllBook();
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      _book = await _database.getAllBook();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> deleteBook(int bookId) async {

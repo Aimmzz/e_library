@@ -10,13 +10,13 @@ Future<bool?> showConfirmationDialog(BuildContext context, String title, String 
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(false); // Kembali dengan false
+              Navigator.of(context).pop(false);
             },
             child: const Text('Batal'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(true); // Kembali dengan true
+              Navigator.of(context).pop(true);
             },
             child: const Text('Hapus'),
           ),

@@ -1,5 +1,6 @@
 import 'package:e_library/data/database.dart';
 import 'package:e_library/provider/explorer_provider.dart';
+import 'package:e_library/provider/favorite_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +63,11 @@ class EditBookProvider with ChangeNotifier {
         publisher,
       );
 
+      // untuk explore paage 
       Provider.of<ExplorerProvider>(context, listen: false).fetchBooks();
+
+      // untuk favorite page
+      Provider.of<FavoriteProvider>(context, listen: false).fetchFavoriteBooks();
 
       Navigator.of(context).pop();
     }

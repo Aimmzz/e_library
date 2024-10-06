@@ -34,7 +34,6 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH16,
 
-                  // Input untuk judul buku
                   TextField(
                     controller: provider.titleController,
                     decoration: InputDecoration(
@@ -46,7 +45,6 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH16,
 
-                  // Input untuk penulis buku
                   TextField(
                     controller: provider.authorController,
                     decoration: InputDecoration(
@@ -58,7 +56,6 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH16,
 
-                  // Input untuk penerbit buku
                   TextField(
                     controller: provider.publisherController,
                     decoration: InputDecoration(
@@ -91,7 +88,6 @@ class AddBookPage extends StatelessWidget {
                   ),
                   gapH24,
 
-                  // Tombol untuk menyimpan buku
                   Center(
                     child: ElevatedButton(
                       onPressed: () => provider.saveBook(context),

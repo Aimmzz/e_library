@@ -5,6 +5,7 @@ import 'package:e_library/features/profile/profile_page.dart';
 import 'package:e_library/features/search/search_page.dart';
 import 'package:e_library/provider/edit_book_provider.dart';
 import 'package:e_library/provider/explorer_provider.dart';
+import 'package:e_library/provider/favorite_provider.dart';
 import 'package:e_library/widgets/button_bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => ExplorerProvider()),
         ChangeNotifierProvider(create: (_) => EditBookProvider()),
+        ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ],
       child: const MyApp(),
     ),
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // tested with just a hot reload.

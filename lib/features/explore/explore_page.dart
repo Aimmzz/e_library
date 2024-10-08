@@ -64,6 +64,9 @@ class _ExplorePageState extends State<ExplorePage> {
                         author: book.author,
                         createdAt: book.createdAt,
                         publishedYear: book.publishedYear,
+                        imagePath: book.imagePath,
+                        pdfPath: book.pdfPath,
+                        publisher: book.publisher,
                         deleteBook: () async {
                           bool? confirmed = await showConfirmationDialog(
                             context,
@@ -76,7 +79,7 @@ class _ExplorePageState extends State<ExplorePage> {
                           }
                         },
                         addFavorite: () async {
-                          int newFavoriteValue = isFavorite ? 0 : 2;
+                          int newFavoriteValue = isFavorite ? 1 : 2;
                           await Provider.of<ExplorerProvider>(context, listen: false).updateFavorite(book.id, newFavoriteValue);
                         },
                         editBook: () {

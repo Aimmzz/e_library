@@ -86,6 +86,35 @@ class AddBookPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  gapH16,
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => provider.pickPdf(),
+                          child: const Text('Upload PDF'),
+                        ),
+                      ),
+                      if (provider.pdfPath != null)
+                        const Icon(Icons.check_circle, color: Colors.green),
+                    ],
+                  ),
+                  gapH16,
+
+                  // Tombol untuk memilih Gambar
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => provider.pickImage(),
+                          child: const Text('Upload Image'),
+                        ),
+                      ),
+                      if (provider.imagePath != null)
+                        const Icon(Icons.check_circle, color: Colors.green),
+                    ],
+                  ),
                   gapH24,
 
                   Center(

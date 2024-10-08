@@ -57,9 +57,30 @@ class $BooksTable extends Books with TableInfo<$BooksTable, Book> {
   late final GeneratedColumn<DateTime> publishedYear =
       GeneratedColumn<DateTime>('published_year', aliasedName, false,
           type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _pdfPathMeta =
+      const VerificationMeta('pdfPath');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, title, author, publisher, favorite, createdAt, publishedYear];
+  late final GeneratedColumn<String> pdfPath = GeneratedColumn<String>(
+      'pdf_path', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _imagePathMeta =
+      const VerificationMeta('imagePath');
+  @override
+  late final GeneratedColumn<String> imagePath = GeneratedColumn<String>(
+      'image_path', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        title,
+        author,
+        publisher,
+        favorite,
+        createdAt,
+        publishedYear,
+        pdfPath,
+        imagePath
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -111,6 +132,14 @@ class $BooksTable extends Books with TableInfo<$BooksTable, Book> {
     } else if (isInserting) {
       context.missing(_publishedYearMeta);
     }
+    if (data.containsKey('pdf_path')) {
+      context.handle(_pdfPathMeta,
+          pdfPath.isAcceptableOrUnknown(data['pdf_path']!, _pdfPathMeta));
+    }
+    if (data.containsKey('image_path')) {
+      context.handle(_imagePathMeta,
+          imagePath.isAcceptableOrUnknown(data['image_path']!, _imagePathMeta));
+    }
     return context;
   }
 
@@ -134,6 +163,10 @@ class $BooksTable extends Books with TableInfo<$BooksTable, Book> {
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       publishedYear: attachedDatabase.typeMapping.read(
           DriftSqlType.dateTime, data['${effectivePrefix}published_year'])!,
+      pdfPath: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pdf_path']),
+      imagePath: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}image_path']),
     );
   }
 
@@ -151,6 +184,8 @@ class Book extends DataClass implements Insertable<Book> {
   final int favorite;
   final DateTime createdAt;
   final DateTime publishedYear;
+  final String? pdfPath;
+  final String? imagePath;
   const Book(
       {required this.id,
       required this.title,
@@ -158,7 +193,9 @@ class Book extends DataClass implements Insertable<Book> {
       required this.publisher,
       required this.favorite,
       required this.createdAt,
-      required this.publishedYear});
+      required this.publishedYear,
+      this.pdfPath,
+      this.imagePath});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -169,6 +206,12 @@ class Book extends DataClass implements Insertable<Book> {
     map['favorite'] = Variable<int>(favorite);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['published_year'] = Variable<DateTime>(publishedYear);
+    if (!nullToAbsent || pdfPath != null) {
+      map['pdf_path'] = Variable<String>(pdfPath);
+    }
+    if (!nullToAbsent || imagePath != null) {
+      map['image_path'] = Variable<String>(imagePath);
+    }
     return map;
   }
 
@@ -181,6 +224,12 @@ class Book extends DataClass implements Insertable<Book> {
       favorite: Value(favorite),
       createdAt: Value(createdAt),
       publishedYear: Value(publishedYear),
+      pdfPath: pdfPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pdfPath),
+      imagePath: imagePath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imagePath),
     );
   }
 
@@ -195,6 +244,8 @@ class Book extends DataClass implements Insertable<Book> {
       favorite: serializer.fromJson<int>(json['favorite']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       publishedYear: serializer.fromJson<DateTime>(json['publishedYear']),
+      pdfPath: serializer.fromJson<String?>(json['pdfPath']),
+      imagePath: serializer.fromJson<String?>(json['imagePath']),
     );
   }
   @override
@@ -208,6 +259,8 @@ class Book extends DataClass implements Insertable<Book> {
       'favorite': serializer.toJson<int>(favorite),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'publishedYear': serializer.toJson<DateTime>(publishedYear),
+      'pdfPath': serializer.toJson<String?>(pdfPath),
+      'imagePath': serializer.toJson<String?>(imagePath),
     };
   }
 
@@ -218,7 +271,9 @@ class Book extends DataClass implements Insertable<Book> {
           String? publisher,
           int? favorite,
           DateTime? createdAt,
-          DateTime? publishedYear}) =>
+          DateTime? publishedYear,
+          Value<String?> pdfPath = const Value.absent(),
+          Value<String?> imagePath = const Value.absent()}) =>
       Book(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -227,6 +282,8 @@ class Book extends DataClass implements Insertable<Book> {
         favorite: favorite ?? this.favorite,
         createdAt: createdAt ?? this.createdAt,
         publishedYear: publishedYear ?? this.publishedYear,
+        pdfPath: pdfPath.present ? pdfPath.value : this.pdfPath,
+        imagePath: imagePath.present ? imagePath.value : this.imagePath,
       );
   Book copyWithCompanion(BooksCompanion data) {
     return Book(
@@ -239,6 +296,8 @@ class Book extends DataClass implements Insertable<Book> {
       publishedYear: data.publishedYear.present
           ? data.publishedYear.value
           : this.publishedYear,
+      pdfPath: data.pdfPath.present ? data.pdfPath.value : this.pdfPath,
+      imagePath: data.imagePath.present ? data.imagePath.value : this.imagePath,
     );
   }
 
@@ -251,14 +310,16 @@ class Book extends DataClass implements Insertable<Book> {
           ..write('publisher: $publisher, ')
           ..write('favorite: $favorite, ')
           ..write('createdAt: $createdAt, ')
-          ..write('publishedYear: $publishedYear')
+          ..write('publishedYear: $publishedYear, ')
+          ..write('pdfPath: $pdfPath, ')
+          ..write('imagePath: $imagePath')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, title, author, publisher, favorite, createdAt, publishedYear);
+  int get hashCode => Object.hash(id, title, author, publisher, favorite,
+      createdAt, publishedYear, pdfPath, imagePath);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -269,7 +330,9 @@ class Book extends DataClass implements Insertable<Book> {
           other.publisher == this.publisher &&
           other.favorite == this.favorite &&
           other.createdAt == this.createdAt &&
-          other.publishedYear == this.publishedYear);
+          other.publishedYear == this.publishedYear &&
+          other.pdfPath == this.pdfPath &&
+          other.imagePath == this.imagePath);
 }
 
 class BooksCompanion extends UpdateCompanion<Book> {
@@ -280,6 +343,8 @@ class BooksCompanion extends UpdateCompanion<Book> {
   final Value<int> favorite;
   final Value<DateTime> createdAt;
   final Value<DateTime> publishedYear;
+  final Value<String?> pdfPath;
+  final Value<String?> imagePath;
   const BooksCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -288,6 +353,8 @@ class BooksCompanion extends UpdateCompanion<Book> {
     this.favorite = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.publishedYear = const Value.absent(),
+    this.pdfPath = const Value.absent(),
+    this.imagePath = const Value.absent(),
   });
   BooksCompanion.insert({
     this.id = const Value.absent(),
@@ -297,6 +364,8 @@ class BooksCompanion extends UpdateCompanion<Book> {
     required int favorite,
     required DateTime createdAt,
     required DateTime publishedYear,
+    this.pdfPath = const Value.absent(),
+    this.imagePath = const Value.absent(),
   })  : title = Value(title),
         author = Value(author),
         publisher = Value(publisher),
@@ -311,6 +380,8 @@ class BooksCompanion extends UpdateCompanion<Book> {
     Expression<int>? favorite,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? publishedYear,
+    Expression<String>? pdfPath,
+    Expression<String>? imagePath,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -320,6 +391,8 @@ class BooksCompanion extends UpdateCompanion<Book> {
       if (favorite != null) 'favorite': favorite,
       if (createdAt != null) 'created_at': createdAt,
       if (publishedYear != null) 'published_year': publishedYear,
+      if (pdfPath != null) 'pdf_path': pdfPath,
+      if (imagePath != null) 'image_path': imagePath,
     });
   }
 
@@ -330,7 +403,9 @@ class BooksCompanion extends UpdateCompanion<Book> {
       Value<String>? publisher,
       Value<int>? favorite,
       Value<DateTime>? createdAt,
-      Value<DateTime>? publishedYear}) {
+      Value<DateTime>? publishedYear,
+      Value<String?>? pdfPath,
+      Value<String?>? imagePath}) {
     return BooksCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -339,6 +414,8 @@ class BooksCompanion extends UpdateCompanion<Book> {
       favorite: favorite ?? this.favorite,
       createdAt: createdAt ?? this.createdAt,
       publishedYear: publishedYear ?? this.publishedYear,
+      pdfPath: pdfPath ?? this.pdfPath,
+      imagePath: imagePath ?? this.imagePath,
     );
   }
 
@@ -366,6 +443,12 @@ class BooksCompanion extends UpdateCompanion<Book> {
     if (publishedYear.present) {
       map['published_year'] = Variable<DateTime>(publishedYear.value);
     }
+    if (pdfPath.present) {
+      map['pdf_path'] = Variable<String>(pdfPath.value);
+    }
+    if (imagePath.present) {
+      map['image_path'] = Variable<String>(imagePath.value);
+    }
     return map;
   }
 
@@ -378,7 +461,9 @@ class BooksCompanion extends UpdateCompanion<Book> {
           ..write('publisher: $publisher, ')
           ..write('favorite: $favorite, ')
           ..write('createdAt: $createdAt, ')
-          ..write('publishedYear: $publishedYear')
+          ..write('publishedYear: $publishedYear, ')
+          ..write('pdfPath: $pdfPath, ')
+          ..write('imagePath: $imagePath')
           ..write(')'))
         .toString();
   }
@@ -403,6 +488,8 @@ typedef $$BooksTableCreateCompanionBuilder = BooksCompanion Function({
   required int favorite,
   required DateTime createdAt,
   required DateTime publishedYear,
+  Value<String?> pdfPath,
+  Value<String?> imagePath,
 });
 typedef $$BooksTableUpdateCompanionBuilder = BooksCompanion Function({
   Value<int> id,
@@ -412,6 +499,8 @@ typedef $$BooksTableUpdateCompanionBuilder = BooksCompanion Function({
   Value<int> favorite,
   Value<DateTime> createdAt,
   Value<DateTime> publishedYear,
+  Value<String?> pdfPath,
+  Value<String?> imagePath,
 });
 
 class $$BooksTableFilterComposer extends FilterComposer<_$AppDb, $BooksTable> {
@@ -448,6 +537,16 @@ class $$BooksTableFilterComposer extends FilterComposer<_$AppDb, $BooksTable> {
 
   ColumnFilters<DateTime> get publishedYear => $state.composableBuilder(
       column: $state.table.publishedYear,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get pdfPath => $state.composableBuilder(
+      column: $state.table.pdfPath,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get imagePath => $state.composableBuilder(
+      column: $state.table.imagePath,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
@@ -489,6 +588,16 @@ class $$BooksTableOrderingComposer
       column: $state.table.publishedYear,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get pdfPath => $state.composableBuilder(
+      column: $state.table.pdfPath,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get imagePath => $state.composableBuilder(
+      column: $state.table.imagePath,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
 class $$BooksTableTableManager extends RootTableManager<
@@ -518,6 +627,8 @@ class $$BooksTableTableManager extends RootTableManager<
             Value<int> favorite = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> publishedYear = const Value.absent(),
+            Value<String?> pdfPath = const Value.absent(),
+            Value<String?> imagePath = const Value.absent(),
           }) =>
               BooksCompanion(
             id: id,
@@ -527,6 +638,8 @@ class $$BooksTableTableManager extends RootTableManager<
             favorite: favorite,
             createdAt: createdAt,
             publishedYear: publishedYear,
+            pdfPath: pdfPath,
+            imagePath: imagePath,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -536,6 +649,8 @@ class $$BooksTableTableManager extends RootTableManager<
             required int favorite,
             required DateTime createdAt,
             required DateTime publishedYear,
+            Value<String?> pdfPath = const Value.absent(),
+            Value<String?> imagePath = const Value.absent(),
           }) =>
               BooksCompanion.insert(
             id: id,
@@ -545,6 +660,8 @@ class $$BooksTableTableManager extends RootTableManager<
             favorite: favorite,
             createdAt: createdAt,
             publishedYear: publishedYear,
+            pdfPath: pdfPath,
+            imagePath: imagePath,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

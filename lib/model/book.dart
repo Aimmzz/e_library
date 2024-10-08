@@ -9,4 +9,7 @@ class Books extends Table {
   IntColumn get favorite  => integer()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get publishedYear => dateTime()();
+
+  TextColumn get pdfPath => text().nullable()();
+  TextColumn get imagePath => text().nullable()();
 }

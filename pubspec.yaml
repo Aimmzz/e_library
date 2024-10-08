@@ -39,6 +39,8 @@ dependencies:
   provider: ^6.1.2
   drift: ^2.19.1+1
   drift_flutter: ^0.1.0
+  syncfusion_flutter_pdfviewer: ^27.1.51
+  file_picker: ^8.1.2
 
 dev_dependencies:
   flutter_test:

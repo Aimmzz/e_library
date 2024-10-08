@@ -58,6 +58,7 @@ class _FavoritePageState extends State<FavoritePage> {
                         author: book.author,
                         createdAt: book.createdAt,
                         publishedYear: book.publishedYear,
+                        publisher: book.publisher,
                         deleteBook: () async {
                           bool? confirmed = await showConfirmationDialog(
                             context,

@@ -5,8 +5,21 @@ import 'package:e_library/widgets/header_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
+
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<SearchProvider>(context, listen: false).loadBooks();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +28,7 @@ class SearchPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const HeaderSearch(), // Header untuk input pencarian
+            const HeaderSearch(),
             Expanded(
               child: Consumer<SearchProvider>(
                 builder: (context, provider, child) {
@@ -39,6 +52,9 @@ class SearchPage extends StatelessWidget {
                         author: book.author,
                         createdAt: book.createdAt,
                         publishedYear: book.publishedYear,
+                        publisher: book.publisher,
+                        pdfPath: book.pdfPath,
+                        imagePath: book.imagePath,
                       );
                     },
                   );

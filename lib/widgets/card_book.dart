@@ -42,7 +42,6 @@ class CardBook extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        // Navigasi ke halaman PDF saat card di-klik
         if (pdfPath != null && pdfPath!.isNotEmpty) {
           Navigator.push(
             context,
@@ -80,7 +79,7 @@ class CardBook extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
                   image: imagePath != null && imagePath!.isNotEmpty 
-                      ? FileImage(File(imagePath!)) // Load image from file
+                      ? FileImage(File(imagePath!))
                       : const AssetImage('assets/images/sample_profile.jpeg') as ImageProvider,
                   fit: BoxFit.cover,
                 ),

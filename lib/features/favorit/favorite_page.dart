@@ -59,6 +59,8 @@ class _FavoritePageState extends State<FavoritePage> {
                         createdAt: book.createdAt,
                         publishedYear: book.publishedYear,
                         publisher: book.publisher,
+                        pdfPath: book.pdfPath,
+                        imagePath: book.imagePath,
                         deleteBook: () async {
                           bool? confirmed = await showConfirmationDialog(
                             context,

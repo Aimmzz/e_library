@@ -31,7 +31,7 @@ class HeaderExplore extends StatelessWidget {
                 IconButton(
                     onPressed: () {},
                     icon: const Icon(
-                      Icons.notifications_none_outlined,
+                      Icons.info_outline,
                       color: ColorsValues.mainBlack,
                       size: 28.0,
                     ))

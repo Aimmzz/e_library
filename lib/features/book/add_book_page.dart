@@ -1,5 +1,8 @@
+import 'package:e_library/constant/color_values.dart';
 import 'package:e_library/constant/custom_size.dart';
 import 'package:e_library/provider/add_book_provider.dart';
+import 'package:e_library/widgets/custom_button.dart';
+import 'package:e_library/widgets/custom_text_filed.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,12 +15,15 @@ class AddBookPage extends StatelessWidget {
       create: (_) => AddBookProvider(),
       child: Consumer<AddBookProvider>(
         builder: (context, provider, child) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
+          return Container(
+            margin: const EdgeInsets.all(16),
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,41 +39,18 @@ class AddBookPage extends StatelessWidget {
                     ),
                   ),
                   gapH16,
-
-                  TextField(
-                    controller: provider.titleController,
-                    decoration: InputDecoration(
-                      labelText: 'Book Title',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
+                  CustomTextFiled(
+                      customController: provider.titleController,
+                      hintText: 'Book Title'),
                   gapH16,
-
-                  TextField(
-                    controller: provider.authorController,
-                    decoration: InputDecoration(
-                      labelText: 'Book Author',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
+                  CustomTextFiled(
+                      customController: provider.authorController,
+                      hintText: 'Book Author'),
                   gapH16,
-
-                  TextField(
-                    controller: provider.publisherController,
-                    decoration: InputDecoration(
-                      labelText: 'Book Publisher',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
+                  CustomTextFiled(
+                      customController: provider.publisherController,
+                      hintText: 'Book Publisher'),
                   gapH16,
-                  
-                  // Dropdown untuk memilih tahun terbit buku
                   DropdownButtonFormField<int>(
                     value: provider.selectedYear,
                     items: provider.years.map((int year) {
@@ -82,18 +65,36 @@ class AddBookPage extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: 'Published Year',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(
+                          color: ColorsValues.mainBlack,
+                          width: 2,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(
+                          color: ColorsValues.mainBlack,
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(
+                          color: ColorsValues.mainBlack,
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
                   gapH16,
-
                   Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
+                        child: CustomButton(
                           onPressed: () => provider.pickPdf(),
-                          child: const Text('Upload PDF'),
+                          title: 'Upload PDF',
+                          color: ColorsValues.mainBlack,
                         ),
                       ),
                       if (provider.pdfPath != null)
@@ -101,14 +102,13 @@ class AddBookPage extends StatelessWidget {
                     ],
                   ),
                   gapH16,
-
-                  // Tombol untuk memilih Gambar
                   Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
+                        child: CustomButton(
                           onPressed: () => provider.pickImage(),
-                          child: const Text('Upload Image'),
+                          title: 'Upload Book Image',
+                          color: ColorsValues.mainBlack,
                         ),
                       ),
                       if (provider.imagePath != null)
@@ -116,12 +116,11 @@ class AddBookPage extends StatelessWidget {
                     ],
                   ),
                   gapH24,
-
                   Center(
-                    child: ElevatedButton(
-                      onPressed: () => provider.saveBook(context),
-                      child: const Text('Save Book'),
-                    ),
+                    child: CustomButton(
+                        onPressed: () => provider.saveBook(context),
+                        title: 'Save Book',
+                        color: Colors.green),
                   ),
                 ],
               ),

@@ -21,7 +21,7 @@ class _ExplorePageState extends State<ExplorePage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<ExplorerProvider>(context, listen: false).fetchBooks();
+      Provider.of<ExplorerProvider>(context, listen: false).checkPermissionsAndFetchData();
     });
   }
 
@@ -40,7 +40,6 @@ class _ExplorePageState extends State<ExplorePage> {
             Expanded(
               child: Consumer<ExplorerProvider>(
                 builder: (context, provider, child) {
-
                   if (provider.isLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),

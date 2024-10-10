@@ -44,21 +44,20 @@ class HeaderDetailBook extends StatelessWidget {
               ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        // mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new_outlined,
-                color: Colors.white,
-              ),
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new_outlined,
+              color: Colors.white,
+              size: 34,
             ),
           ),
+          const Spacer(),
           Container(
             padding: const EdgeInsets.all(10),
             child: Column(

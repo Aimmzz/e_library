@@ -1,6 +1,7 @@
 import 'package:e_library/data/database.dart';
 import 'package:e_library/features/book/add_book_page.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ExplorerProvider with ChangeNotifier {
   late AppDb _database;
@@ -13,6 +14,16 @@ class ExplorerProvider with ChangeNotifier {
 
   ExplorerProvider() {
     _database = AppDb();
+  }
+
+  Future<void> checkPermissionsAndFetchData() async {
+    PermissionStatus status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      fetchBooks();
+    } else {
+      print('Permission ditolak');
+    }
   }
   
   Future<void> fetchBooks() async {
@@ -36,8 +47,7 @@ class ExplorerProvider with ChangeNotifier {
     await _database.addFavorite(bookId, favorite);
     fetchBooks();
   }
-
-  // membuka dialog tambah
+  
   Future<void> openAddBookPage(BuildContext context) async {
     await showModalBottomSheet(
       // isScrollControlled: true,

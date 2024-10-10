@@ -16,8 +16,8 @@ class AddBookProvider with ChangeNotifier {
   int? get selectedYear => _selectedYear;
   List<int> get years => _years;
 
-  String? pdfPath; // Variable untuk path PDF
-  String? imagePath; // Variable untuk path gambar
+  String? pdfPath;
+  String? imagePath;
 
   void setSelectedYear(int? year) {
     _selectedYear = year;
@@ -89,8 +89,8 @@ class AddBookProvider with ChangeNotifier {
         favorite: 1,
         createdAt: DateTime.now(),
         publishedYear: DateTime(publishedYear),
-        pdfPath: Value(pdfPath), // Menyimpan path PDF
-        imagePath: Value(imagePath), // Menyimpan path gambar
+        pdfPath: Value(pdfPath),
+        imagePath: Value(imagePath),
       ),
     );
 

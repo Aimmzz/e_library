@@ -1,26 +1,14 @@
+import 'package:e_library/widgets/custom_dialog_delete.dart';
 import 'package:flutter/material.dart';
 
-Future<bool?> showConfirmationDialog(BuildContext context, String title, String message) {
+Future<bool?> showConfirmationDialog(
+    BuildContext context, String title, String message) {
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: const Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: const Text('Hapus'),
-          ),
-        ],
+      return CustomeDialog(
+        title: title,
+        desc: message,
       );
     },
   );

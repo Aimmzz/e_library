@@ -28,11 +28,12 @@ class HeaderExplore extends StatelessWidget {
                   width: 100,
                   height: 100,
                 ),
+                //tidak digunkan untuk sekarang
                 IconButton(
                     onPressed: () {},
                     icon: const Icon(
                       Icons.info_outline,
-                      color: ColorsValues.mainBlack,
+                      color: Colors.white,
                       size: 28.0,
                     ))
               ],

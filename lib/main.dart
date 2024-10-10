@@ -3,6 +3,7 @@ import 'package:e_library/features/explore/explore_page.dart';
 import 'package:e_library/features/favorit/favorite_page.dart';
 import 'package:e_library/features/profile/profile_page.dart';
 import 'package:e_library/features/search/search_page.dart';
+import 'package:e_library/features/splash/splash_page.dart';
 import 'package:e_library/provider/edit_book_provider.dart';
 import 'package:e_library/provider/explorer_provider.dart';
 import 'package:e_library/provider/favorite_provider.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
-      home: const BottomBar(),
+      home: const SplashPage(),
     );
   }
 }

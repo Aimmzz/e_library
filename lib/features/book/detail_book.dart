@@ -30,25 +30,27 @@ class DetailBookPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => DetailBookProvider(),
       child: Scaffold(
-        body: Column(
-          children: [
-            HeaderDetailBook(
-              title: title,
-              author: author,
-              createdAt: createdAt,
-              publishedYear: publishedYear,
-              imagePath: imagePath ?? '',
-              pdfPath: pdfPath,
-              publisher: publisher,
-            ),
-            Expanded(
-              child: pdfPath.isNotEmpty
-                  ? SfPdfViewer.file(File(pdfPath))
-                  : const Center(
-                      child: Text('No PDF available'),
-                    ),
-            ),
-          ],
+        body: SafeArea(
+          child: Column(
+            children: [
+              HeaderDetailBook(
+                title: title,
+                author: author,
+                createdAt: createdAt,
+                publishedYear: publishedYear,
+                imagePath: imagePath ?? '',
+                pdfPath: pdfPath,
+                publisher: publisher,
+              ),
+              Expanded(
+                child: pdfPath.isNotEmpty
+                    ? SfPdfViewer.file(File(pdfPath))
+                    : const Center(
+                        child: Text('No PDF available'),
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
